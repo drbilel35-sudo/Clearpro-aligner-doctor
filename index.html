@@ -1,0 +1,391 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClearPro Aligner - Doctor Login</title>
+    <style>
+        :root {
+            --primary: #2c7fb8;
+            --secondary: #7fcdbb;
+            --light: #f0f8ff;
+            --dark: #253237;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+        
+        .logo-main {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .logo-sub {
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        
+        .login-header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .login-header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+        
+        .login-form {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44, 127, 184, 0.2);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: var(--danger);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.active {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background-color: var(--success);
+        }
+        
+        .demo-accounts {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .demo-accounts h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .account-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .account-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .account-item:last-child {
+            border-bottom: none;
+        }
+        
+        .account-role {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .account-details {
+            text-align: right;
+        }
+        
+        .username, .password {
+            font-family: monospace;
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 10px;
+            }
+            
+            .login-form {
+                padding: 20px;
+            }
+            
+            .notification {
+                width: calc(100% - 40px);
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="notification-text">Invalid credentials</span>
+    </div>
+
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo">
+                <div class="logo-text">
+                    <div class="logo-main">ClearPro</div>
+                    <div class="logo-sub">ALIGNER</div>
+                </div>
+            </div>
+            <h1>Doctor Portal</h1>
+            <p>Secure access to patient management system</p>
+        </div>
+        
+        <form class="login-form" id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter your username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-sign-in-alt"></i> Login to Portal
+            </button>
+        </form>
+        
+        <div class="demo-accounts">
+            <h3><i class="fas fa-key"></i> Demo Accounts</h3>
+            <div class="account-list">
+                <div class="account-item">
+                    <div class="account-role">Senior Dentist</div>
+                    <div class="account-details">
+                        <span class="username">dr.hilda</span> / 
+                        <span class="password">clearpro123</span>
+                    </div>
+                </div>
+                <div class="account-item">
+                    <div class="account-role">Orthodontist</div>
+                    <div class="account-details">
+                        <span class="username">dr.smith</span> / 
+                        <span class="password">aligner2024</span>
+                    </div>
+                </div>
+                <div class="account-item">
+                    <div class="account-role">Dental Surgeon</div>
+                    <div class="account-details">
+                        <span class="username">dr.johnson</span> / 
+                        <span class="password">dentist456</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        // Valid user accounts
+        const validUsers = {
+            'dr.hilda': 'clearpro123',
+            'dr.smith': 'aligner2024', 
+            'dr.johnson': 'dentist456'
+        };
+
+        // User roles for display
+        const userRoles = {
+            'dr.hilda': 'Dr. Hilda Naeimi - Senior Dentist',
+            'dr.smith': 'Dr. Smith - Orthodontist',
+            'dr.johnson': 'Dr. Johnson - Dental Surgeon'
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            
+            // Focus on username field
+            document.getElementById('username').focus();
+            
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value;
+                
+                // Validate credentials
+                if (validUsers[username] && validUsers[username] === password) {
+                    // Successful login
+                    showNotification(`Welcome, ${userRoles[username]}!`, 'success');
+                    
+                    // Store login state
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('currentUser', username);
+                    localStorage.setItem('userRole', userRoles[username]);
+                    
+                    // Redirect to main portal after delay
+                    setTimeout(() => {
+                        window.location.href = 'portal.html';
+                    }, 1500);
+                    
+                } else {
+                    // Failed login
+                    showNotification('Invalid username or password. Please try again.');
+                    document.getElementById('password').value = '';
+                    document.getElementById('password').focus();
+                }
+            });
+            
+            // Auto-fill demo accounts on click
+            document.querySelectorAll('.username, .password').forEach(element => {
+                element.addEventListener('click', function() {
+                    const accountItem = this.closest('.account-item');
+                    const username = accountItem.querySelector('.username').textContent;
+                    const password = accountItem.querySelector('.password').textContent;
+                    
+                    document.getElementById('username').value = username;
+                    document.getElementById('password').value = password;
+                    
+                    showNotification(`Credentials for ${username} auto-filled!`, 'success');
+                });
+            });
+        });
+        
+        function showNotification(message, type = 'error') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            
+            // Set notification content and type
+            notificationText.textContent = message;
+            notification.className = 'notification';
+            notification.classList.add(type);
+            
+            // Show notification
+            notification.classList.add('active');
+            
+            // Hide notification after 4 seconds
+            setTimeout(() => {
+                notification.classList.remove('active');
+            }, 4000);
+        }
+        
+        // Check if user is already logged in
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
+                window.location.href = 'portal.html';
+            }
+        }
+        
+        // Run check on page load
+        checkLoginStatus();
+    </script>
+</body>
+</html>
