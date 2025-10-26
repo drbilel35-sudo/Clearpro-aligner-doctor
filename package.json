@@ -1,0 +1,8 @@
+{
+  "name": "clearpro-aligner",
+  "version": "1.0.0",
+  "description": "ClearPro Aligner Management System",
+  "scripts": {
+    "build": "echo 'No build process needed'"
+  }
+}
